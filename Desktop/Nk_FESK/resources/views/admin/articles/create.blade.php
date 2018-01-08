@@ -19,14 +19,18 @@
 					
 					<div class="form-group {{ ($errors->has('content')) ? 'has-error' : '' }}">
 					
-                        <textarea class="form-control" rows="15" cols="50" placeholder="Sadržaj članka" name="content" type="text"}}">
-						</textarea>
+                        <textarea class="form-control" rows="15" cols="50" placeholder="Sadržaj članka" name="content" type="text"}}"></textarea>
                         {!! ($errors->has('content') ? $errors->first('content', '<p class="text-danger">:message</p>') : '') !!}
                     </div>
 					
 					<h5>Dodaj sliku članku:</h5>
 						<input type="file" name="file" id="file">
 						 {!! ($errors->has('file') ? $errors->first('file', '<p class="text-danger">:message</p>') : '') !!}
+                    <hr />
+					
+					<h5>Dodaj prilog članku:</h5>
+						<input type="file" name="attachment" id="attachment">
+						 {!! ($errors->has('attachment') ? $errors->first('attachment', '<p class="text-danger">:message</p>') : '') !!}
                     <hr />
 
 					<input name="_token" value="{{ csrf_token() }}" type="hidden">

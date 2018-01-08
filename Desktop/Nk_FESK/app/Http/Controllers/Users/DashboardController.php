@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Users;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Team;
+use App\Articles;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -14,8 +16,6 @@ class DashboardController extends Controller
      */
       public function __construct()
       {
-          $this->middleware('sentinel.auth');
-          $this->middleware('sentinel.role:subscriber');
       }
 
       /**
@@ -26,6 +26,8 @@ class DashboardController extends Controller
       public function index()
       {
 		$teams = Team::all();
-        return view('users.dashboard', ['teams' => $teams]);
+		$articles = DB::table('clanak')->orderBy('id', 'desc')->get();
+		$articles = DB::table('clanak')->orderBy('id', 'desc')->limit(4)->get();
+        return view('users.dashboard', ['articles' => $articles, 'teams' => $teams]);
       }
 }

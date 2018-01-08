@@ -14,8 +14,6 @@ class TeamController extends Controller
 	
 	public function __construct()
     {
-        $this->middleware('sentinel.auth');
-        $this->middleware('sentinel.role:subscriber');
     }
 	
 	public function index(Request $request, $id)

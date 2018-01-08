@@ -18,7 +18,10 @@
         <![endif]-->
     </head>
     <body>
-        <nav class="navbar navbar-default">
+		<div style="text-align:center;">
+			<img src="{{url('/images/fesk_naslovna.jpg')}}" alt="Image"/>
+		</div>
+        <nav class="navbar navbar-default" style="background-color:#00e5ff;">
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
@@ -33,23 +36,21 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        @if (Sentinel::check() && Sentinel::inRole('subscriber'))
-                            <li class="{{ Request::is('dashboard') ? 'active' : '' }}"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+						@unless(Sentinel::check())
+                            <li class="{{ Request::is('dashboard') ? 'active' : '' }}"><a href="{{ route('dashboard') }}">Početna</a></li>
 							<li class="{{ Request::is('teams') ? 'active' : '' }} " >
-								<div class="dropdown show">
-									<a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										Selekcije</a>
-					
+								<a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									Selekcije</a>
 								<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 									@foreach($teams as $team)
 										<a class="dropdown-item" href="{{ route('team', urlencode($team->id)) }}">{{$team->naziv}}</a><br>
 									@endforeach
 									</div>
-								</div>
-								
 							</li>
-							
-                        @endif
+							<li class="{{ Request::is('documents') ? 'active' : '' }}"><a href="{{ route('documents') }}">Dokumenti</a></li>
+							<li class="{{ Request::is('articles') ? 'active' : '' }}"><a href="{{ route('articles') }}">Članci</a></li>
+							<li class="{{ Request::is('contact') ? 'active' : '' }}"><a href="{{ route('contact') }}">Kontakt</a></li>
+						@endunless	
                         @if (Sentinel::check() && Sentinel::inRole('administrator'))
                                 <li class="{{ Request::is('admin/dashboard') ? 'active' : '' }}"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
                                 <li class="{{ Request::is('admin/users*') ? 'active' : '' }}"><a href="{{ route('users.index') }}">Users</a></li>
@@ -58,7 +59,6 @@
 								<li class="{{ Request::is('admin/players*') ? 'active' : '' }}"><a href="{{ route('players.index') }}">Players</a></li>
 								<li class="{{ Request::is('admin/documents*') ? 'active' : '' }}"><a href="{{ route('documents.index') }}">Documents</a></li>
 								<li class="{{ Request::is('admin/articles*') ? 'active' : '' }}"><a href="{{ route('articles.index') }}">Articles</a></li>
-								<li class="{{ Request::is('admin/gallery*') ? 'active' : '' }}"><a href="{{ route('gallery.index') }}">Gallery</a></li>
                         @endif
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
@@ -69,9 +69,6 @@
                                 <li><a href="{{ route('auth.logout') }}">Log Out</a></li>
                               </ul>
                             </li>
-                        @else
-                            <li><a href="{{ route('auth.login.form') }}">Login</a></li>
-                            <li><a href="{{ route('auth.register.form') }}">Register</a></li>
                         @endif
                     </ul>
                 </div><!-- /.navbar-collapse -->
@@ -81,7 +78,12 @@
             @include('notifications')
             @yield('content')
         </div>
+		
+		<div>
+		@include('footer')
+		</div>
 
+		
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <!-- Latest compiled and minified Bootstrap JavaScript -->

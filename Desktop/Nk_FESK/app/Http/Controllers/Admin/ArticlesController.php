@@ -30,7 +30,7 @@ class ArticlesController extends Controller
      */
     public function index()
     {
-		$articles = Articles::all();
+		$articles = DB::table('clanak')->orderBy('id', 'desc')->get();
 		return view('admin.articles.index', ['articles' => $articles]);
     }
 	
@@ -47,9 +47,14 @@ class ArticlesController extends Controller
 			'file' => 'required'
         ]);	
 
-		$path = Storage::disk('uploads')->put("/clanci/", $request->file('file'));
+		$path = Storage::disk('uploads')->put("/clanci/slike/", $request->file('file'));
+		if(isset($_FILES['attachment'])){
+			$attachment = Storage::disk('uploads')->put("/clanci/prilozi/", $request->file('attachment'));
+		}else{
+			$attachment="NULL";
+		}
 		
-		if(DB::table('clanak')->insert(['naziv'=> $request->get('name'), 'tekst' => $request->get('content'), 'slika' => "/uploads/".$path])){			
+		if(DB::table('clanak')->insert(['naziv'=> $request->get('name'), 'tekst' => $request->get('content'), 'slika' => "/uploads/".$path, 'dokument' => "/uploads/".$attachment])){			
 			
 			$message = "Članak je dodan.";
 			if ($request->ajax()) {
@@ -61,7 +66,7 @@ class ArticlesController extends Controller
 			
 		}else{
 			
-			$message = "Nije uspjela izmjena momčadi.";
+			$message = "Nije uspjelo spremanje članka.";
 			if ($request->ajax()) {
                 return response()->json($message, 422);
             }
@@ -75,7 +80,26 @@ class ArticlesController extends Controller
 	
 	public function destroy(Request $request, $articleId)
 	{
+		$article = DB::table('clanak')->where('id', '=', $articleId)->first();
 		DB::table('clanak')->where('id', '=', $articleId)->delete();
+		
+		//Deleting the picture
+		$pictureName= $article->slika;
+		$pictureName_array = explode('/', $pictureName);
+		array_shift($pictureName_array);
+		array_shift($pictureName_array);
+		$pictureName=implode("/", $pictureName_array);
+		Storage::disk('uploads')->delete('/'.$pictureName);
+		
+		//Deleting the attachment
+		if(strlen($article->dokument)>0){
+			$documentName= $article->dokument;
+			$documentName_array = explode('/', $documentName);
+			array_shift($documentName_array);
+			array_shift($documentName_array);
+			$documentName=implode("/", $documentName_array);
+			Storage::disk('uploads')->delete('/'.$documentName);
+		}
 
         // All done
         $message = "Članak je uklonjen.";

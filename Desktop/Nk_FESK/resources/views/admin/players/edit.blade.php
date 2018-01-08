@@ -34,9 +34,8 @@
 					<h5>Pozicija:</h5>
 						<select id="position" name="position">
 							<option value="Vratar" <?php if($player->pozicija == "Vratar"){ echo "selected";}?> >Vratar</option>
-							<option value="Obrambeni" <?php if($player->pozicija == "Obrambeni"){ echo "selected";}?>>Obrambeni</option>
-							<option value="Vezni" <?php if($player->pozicija == "Vezni"){ echo "selected";}?>>Vezni</option>
-							<option value="Napadač" <?php if($player->pozicija == "Napadač"){ echo "selected";}?> >Napadač</option>
+							<option value="Igrač" <?php if($player->pozicija == "Igrač"){ echo "selected";}?>>Igrač</option>
+							<option value="Trener" <?php if($player->pozicija == "Trener"){ echo "selected";}?>>Trener</option>
 						</select>
 					<hr />
 					<h5>Slika igrača:</h5>

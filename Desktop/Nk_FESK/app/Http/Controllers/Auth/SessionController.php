@@ -7,6 +7,10 @@ use Centaur\AuthManager;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Centaur\Dispatches\BaseDispatch;
+use App\Articles;
+use App\Team;
+use Illuminate\Support\Facades\DB;
+
 
 class SessionController extends Controller
 {
@@ -30,7 +34,9 @@ class SessionController extends Controller
      */
     public function getLogin()
     {
-        return view('auth.login');
+		$articles = DB::table('clanak')->orderBy('id', 'desc')->get();
+		$teams=Team::all();
+        return view('auth.login', ['teams' => $teams, 'articles' => $articles]);
     }
 
     /**

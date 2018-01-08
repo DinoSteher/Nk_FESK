@@ -19,8 +19,7 @@
 					
 					<div class="form-group {{ ($errors->has('content')) ? 'has-error' : '' }}">
 					
-                        <textarea class="form-control" rows="15" cols="50" placeholder="Sadržaj članka" name="content" type="text" >
-						{{$article->tekst}}</textarea>
+                        <textarea class="form-control" rows="15" cols="50" placeholder="Sadržaj članka" name="content" type="text" >{{$article->tekst}}</textarea>
                         {!! ($errors->has('content') ? $errors->first('content', '<p class="text-danger">:message</p>') : '') !!}
                     </div>
 					

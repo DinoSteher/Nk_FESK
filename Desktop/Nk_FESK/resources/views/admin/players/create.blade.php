@@ -35,9 +35,8 @@
 					<h5>Pozicija:</h5>
 						<select id="position" name="position">
 							<option value="Vratar">Vratar</option>
-							<option value="Obrambeni">Obrambeni</option>
-							<option value="Vezni">Vezni</option>
-							<option value="Napadač">Napadač</option>
+							<option value="Igrač">Igrač</option>
+							<option value="Trener">Trener</option>
 						</select>
 					{!! ($errors->has('position') ? $errors->first('position', '<p class="text-danger">:message</p>') : '') !!}
 					<hr />

@@ -70,8 +70,15 @@ class DocumentsController extends Controller
 	
 	public function destroy(Request $request, $documentId)
     {
+		$document = DB::table('dokument')->where('id', '=', $documentId)->first();
         DB::table('dokument')->where('id', '=', $documentId)->delete();
-
+		$filename= $document->putanja;
+		$filename_array = explode('/', $filename);
+		array_shift($filename_array);
+		array_shift($filename_array);
+		$filename=implode("/", $filename_array);
+		Storage::disk('uploads')->delete('/'.$filename);
+		
         // All done
         $message = "Dokument je uklonjen.";
         if ($request->ajax()) {

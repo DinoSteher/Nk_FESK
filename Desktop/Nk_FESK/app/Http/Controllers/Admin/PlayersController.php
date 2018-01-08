@@ -89,10 +89,8 @@ class PlayersController extends Controller
 		Storage::disk('uploads')->delete('/'.$filename);
         DB::table('igrac')->where('id', '=', $playerId)->delete();
 		
-
         // All done
         $message = "Igrač je uklonjen.";
-        var_dump($filename);
 		if ($request->ajax()) {
             return response()->json([$message], 200);
         }
@@ -117,8 +115,17 @@ class PlayersController extends Controller
 
 		if($_FILES['file']['size'] > 0){
 			$oldPath =DB::table('igrac')->select('slika')->where('id','=', $id)->first();
-			//Storage::disk('uploads')->delete($oldPath);
 			$path = Storage::disk('uploads')->put("/igraci/".$request->get('teamId'), $request->file('file'));
+			
+			//Deleting the old photo
+			$igrac = DB::table('igrac')->where('id', '=', $id)->first();
+			$filename= $igrac->slika;
+			$filename_array = explode('/', $filename);
+			array_shift($filename_array);
+			array_shift($filename_array);
+			$filename=implode("/", $filename_array);
+			Storage::disk('uploads')->delete('/'.$filename);
+			
 			DB::table('igrac')
             ->where('id','=', $id)
             ->update(['ime' => $request->get('first_name'),'datum_rodenja' => $request->get('date'), 'prezime' => $request->get('last_name'),
